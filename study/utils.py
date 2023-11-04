@@ -11,4 +11,5 @@ def no_output(func):
         result = func(*args, **kwargs)
         sys.stdout = sys.__stdout__
         return result
+
     return wrapper
