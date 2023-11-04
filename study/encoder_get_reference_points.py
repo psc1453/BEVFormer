@@ -40,6 +40,7 @@ def get_3d_ref():
     # Imagine that the whole space is Z x W x H
     # There are 3 cube withe gradients along different axis
     # Fuse them in the last dimension so that they act as an element
+    # Growing direction of xs, ys, zs only decides access axis of them, stack order decides order of vector-element
     # num_points_in_pillar x H x W x 3
     ref_3d = torch.stack((xs, ys, zs), -1)
     print(ref_3d)
@@ -86,5 +87,10 @@ def get_2d_ref():
     ref_x = ref_x.reshape(-1)[None]
     # 1 x (H x W) x 2
     ref_2d = torch.stack((ref_x, ref_y), -1)
-    print(ref_2d)
+
+    # Add a dimension to dimension 2
+    # 1 x (H x W) x 1 x 2
+    ref_2d = ref_2d.repeat(bs, 1, 1).unsqueeze(2)
+    print(ref_2d.shape)
+
     return ref_2d
